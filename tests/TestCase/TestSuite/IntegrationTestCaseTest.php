@@ -417,6 +417,10 @@ class IntegrationTestCaseTest extends IntegrationTestCase
         $this->get('/posts/index/with_flash');
 
         $this->assertSession('An error message', 'Flash.flash.0.message');
+
+        $this->get('/posts/index/with_flash?queryString');
+
+        $this->assertSession('An error message before the redirect', 'Flash.flash.0.message');
     }
 
     /**

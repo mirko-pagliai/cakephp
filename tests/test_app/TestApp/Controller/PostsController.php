@@ -53,6 +53,12 @@ class PostsController extends AppController
      */
     public function index($layout = 'default')
     {
+        if($this->request->getQuery()) {
+            $this->Flash->error('An error message before the redirect');
+
+            $this->redirect([]);
+        }
+
         $this->Flash->error('An error message');
         $this->response->cookie([
             'name' => 'remember_me',
