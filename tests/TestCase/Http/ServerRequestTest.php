@@ -29,6 +29,7 @@ use InvalidArgumentException;
 use Laminas\Diactoros\UploadedFile;
 use Laminas\Diactoros\Uri;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 
@@ -1828,7 +1829,11 @@ class ServerRequestTest extends TestCase
     /**
      * Test that withoutAttribute() cannot remove emulatedAttributes properties.
      */
-    #[DataProvider('emulatedPropertyProvider')]
+    #[TestWith(['here'])]
+    #[TestWith(['params'])]
+    #[TestWith(['base'])]
+    #[TestWith(['webroot'])]
+    #[TestWith(['session'])]
     public function testWithoutAttributesDenyEmulatedProperties(string $prop): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -1893,21 +1898,5 @@ class ServerRequestTest extends TestCase
 
         //Test env() fallback
         $this->assertSame('ing', $request->getEnv('test'));
-    }
-
-    /**
-     * Data provider for emulated property tests.
-     *
-     * @return array
-     */
-    public static function emulatedPropertyProvider(): array
-    {
-        return [
-            ['here'],
-            ['params'],
-            ['base'],
-            ['webroot'],
-            ['session'],
-        ];
     }
 }

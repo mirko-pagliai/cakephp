@@ -20,7 +20,7 @@ use Cake\TestSuite\TestCase;
 use Cake\View\Form\NullContext;
 use Cake\View\StringTemplate;
 use Cake\View\Widget\CheckboxWidget;
-use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 
 /**
  * Checkbox test case
@@ -157,26 +157,14 @@ class CheckboxWidgetTest extends TestCase
     }
 
     /**
-     * Data provider for checkbox values
-     *
-     * @return array
-     */
-    public static function checkedProvider(): array
-    {
-        return [
-            ['checked'],
-            ['1'],
-            [1],
-            [true],
-        ];
-    }
-
-    /**
      * Test rendering checked checkboxes with value.
      *
      * @param mixed $checked
      */
-    #[DataProvider('checkedProvider')]
+    #[TestWith(['checked'])]
+    #[TestWith(['1'])]
+    #[TestWith([1])]
+    #[TestWith([true])]
     public function testRenderCheckedValue($checked): void
     {
         $checkbox = new CheckboxWidget($this->templates);
@@ -198,27 +186,15 @@ class CheckboxWidgetTest extends TestCase
     }
 
     /**
-     * Data provider for checkbox values
-     *
-     * @return array
-     */
-    public static function uncheckedProvider(): array
-    {
-        return [
-            [''],
-            ['0'],
-            [0],
-            [false],
-            [null],
-        ];
-    }
-
-    /**
      * Test rendering unchecked checkboxes
      *
      * @param mixed $checked
      */
-    #[DataProvider('uncheckedProvider')]
+    #[TestWith([''])]
+    #[TestWith(['0'])]
+    #[TestWith([0])]
+    #[TestWith([false])]
+    #[TestWith([null])]
     public function testRenderUnCheckedValue($checked): void
     {
         $checkbox = new CheckboxWidget($this->templates);

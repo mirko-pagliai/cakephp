@@ -28,6 +28,7 @@ use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
 use Laminas\Diactoros\Request as LaminasRequest;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 
 /**
  * HTTP client test.
@@ -446,27 +447,15 @@ class ClientTest extends TestCase
     }
 
     /**
-     * Return a list of HTTP methods.
-     *
-     * @return array
-     */
-    public static function methodProvider(): array
-    {
-        return [
-            [Request::METHOD_GET],
-            [Request::METHOD_POST],
-            [Request::METHOD_PUT],
-            [Request::METHOD_DELETE],
-            [Request::METHOD_PATCH],
-            [Request::METHOD_OPTIONS],
-            [Request::METHOD_TRACE],
-        ];
-    }
-
-    /**
      * test simple POST request.
      */
-    #[DataProvider('methodProvider')]
+    #[TestWith([Request::METHOD_GET])]
+    #[TestWith([Request::METHOD_POST])]
+    #[TestWith([Request::METHOD_PUT])]
+    #[TestWith([Request::METHOD_DELETE])]
+    #[TestWith([Request::METHOD_PATCH])]
+    #[TestWith([Request::METHOD_OPTIONS])]
+    #[TestWith([Request::METHOD_TRACE])]
     public function testMethodsSimple(string $method): void
     {
         $response = new Response();
@@ -494,24 +483,12 @@ class ClientTest extends TestCase
     }
 
     /**
-     * Provider for testing the type option.
-     *
-     * @return array
-     */
-    public static function typeProvider(): array
-    {
-        return [
-            ['application/json', 'application/json'],
-            ['json', 'application/json'],
-            ['xml', 'application/xml'],
-            ['application/xml', 'application/xml'],
-        ];
-    }
-
-    /**
      * Test that using the 'type' option sets the correct headers
      */
-    #[DataProvider('typeProvider')]
+    #[TestWith(['application/json', 'application/json'])]
+    #[TestWith(['json', 'application/json'])]
+    #[TestWith(['xml', 'application/xml'])]
+    #[TestWith(['application/xml', 'application/xml'])]
     public function testPostWithTypeKey(string $type, string $mime): void
     {
         $response = new Response();

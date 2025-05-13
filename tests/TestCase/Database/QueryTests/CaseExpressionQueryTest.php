@@ -28,7 +28,7 @@ use Cake\Test\Fixture\ArticlesFixture;
 use Cake\Test\Fixture\CommentsFixture;
 use Cake\Test\Fixture\ProductsFixture;
 use Cake\TestSuite\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 
 class CaseExpressionQueryTest extends TestCase
 {
@@ -268,19 +268,12 @@ class CaseExpressionQueryTest extends TestCase
         $this->assertSame(5, (int)$query->execute()->fetch()[0]);
     }
 
-    public static function bindingValueDataProvider(): array
-    {
-        return [
-            ['1', 3],
-            ['2', 4],
-        ];
-    }
-
     /**
      * @param string $when The `WHEN` value.
      * @param int $result The result value.
      */
-    #[DataProvider('bindingValueDataProvider')]
+    #[TestWith(['1', 3])]
+    #[TestWith(['2', 4])]
     public function testBindValues(string $when, int $result): void
     {
         $value = '1';

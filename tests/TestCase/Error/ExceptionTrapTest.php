@@ -30,9 +30,9 @@ use Cake\Log\Log;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Text;
 use InvalidArgumentException;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+use PHPUnit\Framework\Attributes\TestWith;
 use RuntimeException;
 use Throwable;
 
@@ -390,18 +390,8 @@ class ExceptionTrapTest extends TestCase
         $this->assertStringContainsString(__FILE__, $out);
     }
 
-    /**
-     * Data provider for memory limit increase
-     */
-    public static function initialMemoryProvider(): array
-    {
-        return [
-            ['256M'],
-            ['1G'],
-        ];
-    }
-
-    #[DataProvider('initialMemoryProvider')]
+    #[TestWith(['256M'])]
+    #[TestWith(['1G'])]
     public function testIncreaseMemoryLimit($initial): void
     {
         ini_set('memory_limit', $initial);

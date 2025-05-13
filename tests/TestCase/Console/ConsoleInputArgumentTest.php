@@ -20,6 +20,7 @@ use Cake\Console\ConsoleInputArgument;
 use Cake\Console\Exception\ConsoleException;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 use SimpleXMLElement;
 
 /**
@@ -178,25 +179,15 @@ class ConsoleInputArgumentTest extends TestCase
     }
 
     /**
-     * @return array
-     */
-    public static function dataValidChoiceSeparatorSuccess(): array
-    {
-        return [
-            [['red', 'blue', 'green'], null, 'blue'],
-            [['blue,red', 'green,yellow'], null, 'blue,red'],
-            [['red', 'blue', 'green'], ';', 'blue;red'],
-        ];
-    }
-
-    /**
      * Test valid choice with value contain multiple and separator.
      *
      * @param array $choices
      * @param string|null $separator
      * @param string $value
      */
-    #[DataProvider('dataValidChoiceSeparatorSuccess')]
+    #[TestWith([['red', 'blue', 'green'], null, 'blue'])]
+    #[TestWith([['blue,red', 'green,yellow'], null, 'blue,red'])]
+    #[TestWith([['red', 'blue', 'green'], ';', 'blue;red'])]
     public function testValidChoiceSeparatorSuccess(array $choices, ?string $separator, string $value): void
     {
         $input = new ConsoleInputArgument(
@@ -212,14 +203,6 @@ class ConsoleInputArgumentTest extends TestCase
         $this->assertTrue($success);
     }
 
-    public static function dataValidChoiceSeparatorFail(): array
-    {
-        return [
-            [['red', 'blue', 'green'], null, 'blue,yellow'],
-            [['red', 'blue', 'green'], ';', 'blue;yellow'],
-        ];
-    }
-
     /**
      * Test valid choice with value contain multiple and separator.
      *
@@ -227,7 +210,8 @@ class ConsoleInputArgumentTest extends TestCase
      * @param string|null $separator
      * @param string $value
      */
-    #[DataProvider('dataValidChoiceSeparatorFail')]
+    #[TestWith([['red', 'blue', 'green'], null, 'blue,yellow'])]
+    #[TestWith( [['red', 'blue', 'green'], ';', 'blue;yellow'])]
     public function testValidChoiceSeparatorFail(array $choices, ?string $separator, string $value): void
     {
         $input = new ConsoleInputArgument(

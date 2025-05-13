@@ -20,6 +20,7 @@ use Cake\Console\ConsoleInputOption;
 use Cake\Console\Exception\ConsoleException;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 use SimpleXMLElement;
 
 /**
@@ -286,15 +287,6 @@ class ConsoleInputOptionTest extends TestCase
         $this->assertTrue($success);
     }
 
-    public static function dataValidChoiceSeparatorFail(): array
-    {
-        return [
-            [['red', 'blue', 'green'], null, false, 'blue,yellow'],
-            [['red', 'blue', 'green'], ';', false, 'blue;yellow'],
-            [[1, 0], ';', false, '1;0'],
-        ];
-    }
-
     /**
      * Test valid choice with value contain multiple and separator.
      *
@@ -303,7 +295,9 @@ class ConsoleInputOptionTest extends TestCase
      * @param bool $isBoolean
      * @param string $value
      */
-    #[DataProvider('dataValidChoiceSeparatorFail')]
+    #[TestWith([['red', 'blue', 'green'], null, false, 'blue,yellow'])]
+    #[TestWith([['red', 'blue', 'green'], ';', false, 'blue;yellow'])]
+    #[TestWith([[1, 0], ';', false, '1;0'])]
     public function testValidChoiceSeparatorFail(array $choices, ?string $separator, bool $isBoolean, string $value): void
     {
         $input = new ConsoleInputOption(

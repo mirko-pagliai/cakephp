@@ -19,7 +19,7 @@ namespace Cake\Test\TestCase\Core;
 use Cake\Core\Configure;
 use Cake\Http\Response;
 use Cake\TestSuite\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 use stdClass;
 
 require_once CAKE . 'Core/functions_global.php';
@@ -128,25 +128,18 @@ class FunctionsGlobalTest extends TestCase
      * @param mixed $value
      * @param mixed $expected
      */
-    #[DataProvider('hInputProvider')]
+    #[TestWith(['i am clean', 'i am clean'])]
+    #[TestWith(['i "need" escaping', 'i &quot;need&quot; escaping'])]
+    #[TestWith([null, null])]
+    #[TestWith([1, 1])]
+    #[TestWith([1.1, 1.1])]
+    #[TestWith([new stdClass(), '(object)stdClass'])]
+    #[TestWith([new Response(), ''])]
+    #[TestWith([['clean', '"clean-me'], ['clean', '&quot;clean-me']])]
     public function testH($value, $expected): void
     {
         $result = h($value);
         $this->assertSame($expected, $result);
-    }
-
-    public static function hInputProvider(): array
-    {
-        return [
-            ['i am clean', 'i am clean'],
-            ['i "need" escaping', 'i &quot;need&quot; escaping'],
-            [null, null],
-            [1, 1],
-            [1.1, 1.1],
-            [new stdClass(), '(object)stdClass'],
-            [new Response(), ''],
-            [['clean', '"clean-me'], ['clean', '&quot;clean-me']],
-        ];
     }
 
     public function testH2(): void

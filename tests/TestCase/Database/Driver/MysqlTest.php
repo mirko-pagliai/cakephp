@@ -21,7 +21,7 @@ use Cake\Database\DriverFeatureEnum;
 use Cake\Datasource\ConnectionManager;
 use Cake\TestSuite\TestCase;
 use PDO;
-use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 
 /**
  * Tests MySQL driver
@@ -170,7 +170,10 @@ class MysqlTest extends TestCase
      * @param string $dbVersion
      * @param string $expectedVersion
      */
-    #[DataProvider('versionStringProvider')]
+    #[TestWith(['10.2.23-MariaDB', '10.2.23-MariaDB'])]
+    #[TestWith(['5.5.5-10.2.23-MariaDB', '10.2.23-MariaDB'])]
+    #[TestWith(['5.5.5-10.4.13-MariaDB-1:10.4.13+maria~focal', '10.4.13-MariaDB-1'])]
+    #[TestWith(['8.0.0', '8.0.0'])]
     public function testVersion($dbVersion, $expectedVersion): void
     {
         /** @var \PHPUnit\Framework\MockObject\MockObject&\PDO $connection */
@@ -194,16 +197,6 @@ class MysqlTest extends TestCase
 
         $result = $driver->version();
         $this->assertSame($expectedVersion, $result);
-    }
-
-    public static function versionStringProvider(): array
-    {
-        return [
-            ['10.2.23-MariaDB', '10.2.23-MariaDB'],
-            ['5.5.5-10.2.23-MariaDB', '10.2.23-MariaDB'],
-            ['5.5.5-10.4.13-MariaDB-1:10.4.13+maria~focal', '10.4.13-MariaDB-1'],
-            ['8.0.0', '8.0.0'],
-        ];
     }
 
     /**

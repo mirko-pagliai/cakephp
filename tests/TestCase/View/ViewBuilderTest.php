@@ -28,6 +28,7 @@ use Cake\View\JsonView;
 use Cake\View\View;
 use Cake\View\ViewBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 use TestApp\View\AppView;
 
 /**
@@ -80,38 +81,6 @@ class ViewBuilderTest extends TestCase
     }
 
     /**
-     * data provider for string properties.
-     *
-     * @return array
-     */
-    public static function stringPropertyProvider(): array
-    {
-        return [
-            ['layoutPath', 'Admin/'],
-            ['templatePath', 'Admin/'],
-            ['plugin', 'TestPlugin'],
-            ['layout', 'admin'],
-            ['theme', 'TestPlugin'],
-            ['template', 'edit'],
-            ['name', 'Articles'],
-            ['className', JsonView::class],
-        ];
-    }
-
-    /**
-     * data provider for boolean properties.
-     * Format: [key, expectedDefault, newValue]
-     *
-     * @return array
-     */
-    public static function boolPropertyProvider(): array
-    {
-        return [
-            ['autoLayout', true, false],
-        ];
-    }
-
-    /**
      * data provider for array properties.
      *
      * @return array
@@ -126,7 +95,14 @@ class ViewBuilderTest extends TestCase
     /**
      * Test string property accessor/mutator methods.
      */
-    #[DataProvider('stringPropertyProvider')]
+    #[TestWith(['layoutPath', 'Admin/'])]
+    #[TestWith(['templatePath', 'Admin/'])]
+    #[TestWith(['plugin', 'TestPlugin'])]
+    #[TestWith(['layout', 'admin'])]
+    #[TestWith(['theme', 'TestPlugin'])]
+    #[TestWith(['template', 'edit'])]
+    #[TestWith(['name', 'Articles'])]
+    #[TestWith(['className', JsonView::class])]
     public function testStringProperties(string $property, string $value): void
     {
         $get = 'get' . ucfirst($property);
@@ -141,7 +117,7 @@ class ViewBuilderTest extends TestCase
     /**
      * Test string property accessor/mutator methods.
      */
-    #[DataProvider('boolPropertyProvider')]
+    #[TestWith(['autoLayout', true, false])]
     public function testBoolProperties(string $property, bool $default, bool $value): void
     {
         $set = 'enable' . ucfirst($property);

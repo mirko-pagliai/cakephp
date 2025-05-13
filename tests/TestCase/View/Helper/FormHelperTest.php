@@ -48,6 +48,7 @@ use DOMXPath;
 use InvalidArgumentException;
 use Mockery;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 use ReflectionProperty;
 use TestApp\Model\Entity\Article;
 use TestApp\Model\Enum\ArticleStatus;
@@ -370,22 +371,6 @@ class FormHelperTest extends TestCase
     }
 
     /**
-     * Data provider for type option.
-     *
-     * @return array
-     */
-    public static function requestTypeProvider(): array
-    {
-        return [
-            // type, method, override
-            ['post', 'post', 'POST'],
-            ['put', 'post', 'PUT'],
-            ['patch', 'post', 'PATCH'],
-            ['delete', 'post', 'DELETE'],
-        ];
-    }
-
-    /**
      * Test creating file forms.
      */
     public function testCreateFile(): void
@@ -618,7 +603,10 @@ class FormHelperTest extends TestCase
     /**
      * test the create() method
      */
-    #[DataProvider('requestTypeProvider')]
+    #[TestWith(['post', 'post', 'POST'])]
+    #[TestWith(['put', 'post', 'PUT'])]
+    #[TestWith(['patch', 'post', 'PATCH'])]
+    #[TestWith(['delete', 'post', 'DELETE'])]
     public function testCreateTypeOptions(string $type, string $method, string $override): void
     {
         $encoding = strtolower(Configure::read('App.encoding'));

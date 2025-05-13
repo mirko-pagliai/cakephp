@@ -33,7 +33,7 @@ use Exception;
 use PDO;
 use PDOException;
 use PDOStatement;
-use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 use TestApp\Database\Driver\RetryDriver;
 use TestApp\Database\Driver\StubDriver;
 
@@ -104,7 +104,12 @@ class DriverTest extends TestCase
      *
      * @param mixed $input
      */
-    #[DataProvider('schemaValueProvider')]
+    #[TestWith([null, 'NULL'])]
+    #[TestWith([false, 'FALSE'])]
+    #[TestWith([true, 'TRUE'])]
+    #[TestWith([1, '1'])]
+    #[TestWith(['0', '0'])]
+    #[TestWith(['42', '42'])]
     public function testSchemaValue($input, string $expected): void
     {
         $result = $this->driver->schemaValue($input);
@@ -278,23 +283,6 @@ class DriverTest extends TestCase
         $this->driver->__destruct();
 
         $this->assertFalse($this->driver->__debugInfo()['connected']);
-    }
-
-    /**
-     * Data provider for testSchemaValue().
-     *
-     * @return array
-     */
-    public static function schemaValueProvider(): array
-    {
-        return [
-            [null, 'NULL'],
-            [false, 'FALSE'],
-            [true, 'TRUE'],
-            [1, '1'],
-            ['0', '0'],
-            ['42', '42'],
-        ];
     }
 
     /**

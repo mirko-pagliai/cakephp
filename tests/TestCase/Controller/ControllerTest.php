@@ -37,7 +37,7 @@ use Cake\View\XmlView;
 use InvalidArgumentException;
 use Laminas\Diactoros\Uri;
 use Mockery;
-use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 use ReflectionFunction;
 use RuntimeException;
 use TestApp\Controller\Admin\PostsController as AdminPostsController;
@@ -468,27 +468,15 @@ class ControllerTest extends TestCase
     }
 
     /**
-     * Generates status codes for redirect test.
-     *
-     * @return array
-     */
-    public static function statusCodeProvider(): array
-    {
-        return [
-            [300, 'Multiple Choices'],
-            [301, 'Moved Permanently'],
-            [302, 'Found'],
-            [303, 'See Other'],
-            [304, 'Not Modified'],
-            [305, 'Use Proxy'],
-            [307, 'Temporary Redirect'],
-        ];
-    }
-
-    /**
      * testRedirect method
      */
-    #[DataProvider('statusCodeProvider')]
+    #[TestWith([300, 'Multiple Choices'])]
+    #[TestWith([301, 'Moved Permanently'])]
+    #[TestWith([302, 'Found'])]
+    #[TestWith([303, 'See Other'])]
+    #[TestWith([304, 'Not Modified'])]
+    #[TestWith([305, 'Use Proxy'])]
+    #[TestWith([307, 'Temporary Redirect'])]
     public function testRedirectByCode(int $code, string $msg): void
     {
         $Controller = new Controller(new ServerRequest());

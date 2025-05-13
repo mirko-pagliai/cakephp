@@ -20,7 +20,7 @@ use Cake\Network\Exception\SocketException;
 use Cake\Network\Socket;
 use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
-use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 
 /**
  * SocketTest class
@@ -126,22 +126,10 @@ class SocketTest extends TestCase
     }
 
     /**
-     * data provider function for testInvalidConnection
-     *
-     * @return array
-     */
-    public static function invalidConnections(): array
-    {
-        return [
-            [['host' => 'invalid.host', 'port' => 9999, 'timeout' => 1]],
-            [['host' => '127.0.0.1', 'port' => '70000', 'timeout' => 1]],
-        ];
-    }
-
-    /**
      * testInvalidConnection method
      */
-    #[DataProvider('invalidConnections')]
+    #[TestWith([['host' => 'invalid.host', 'port' => 9999, 'timeout' => 1]])]
+    #[TestWith([['host' => '127.0.0.1', 'port' => '70000', 'timeout' => 1]])]
     public function testInvalidConnection(array $data): void
     {
         $this->expectException(SocketException::class);

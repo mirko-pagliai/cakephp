@@ -20,6 +20,7 @@ use Cake\TestSuite\TestCase;
 use Cake\View\Helper\TextHelper;
 use Cake\View\View;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 
 /**
  * TextHelperTest class
@@ -57,23 +58,11 @@ class TextHelperTest extends TestCase
     }
 
     /**
-     * Provider for method proxying.
-     *
-     * @return array
-     */
-    public static function methodProvider(): array
-    {
-        return [
-            ['highlight', ['this is a test', 'test']],
-            ['slug', ['test']],
-            ['tail', ['test test']],
-        ];
-    }
-
-    /**
      * Tests calls are proxied to Number class.
      */
-    #[DataProvider('methodProvider')]
+    #[TestWith(['highlight', ['this is a test', 'test']])]
+    #[TestWith(['slug', ['test']])]
+    #[TestWith(['tail', ['test test']])]
     public function testMethodProxying(string $method, mixed $arg): void
     {
         $helper = new TextHelper($this->View);

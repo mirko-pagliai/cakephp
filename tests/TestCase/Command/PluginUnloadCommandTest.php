@@ -19,7 +19,7 @@ use Cake\Console\CommandInterface;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\Core\Plugin;
 use Cake\TestSuite\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 
 /**
  * PluginUnloadCommandTest class
@@ -77,7 +77,8 @@ class PluginUnloadCommandTest extends TestCase
     /**
      * testUnload
      */
-    #[DataProvider('pluginNameProvider')]
+    #[TestWith(['TestPlugin'])]
+    #[TestWith(['TestPluginTwo'])]
     public function testUnload($plugin): void
     {
         $this->exec('plugin unload ' . $plugin);
@@ -87,14 +88,6 @@ class PluginUnloadCommandTest extends TestCase
 
         $this->assertStringNotContainsString("'" . $plugin . "'", $contents);
         $this->assertStringContainsString("'Company/TestPluginThree'", $contents);
-    }
-
-    public static function pluginNameProvider(): array
-    {
-        return [
-            ['TestPlugin'],
-            ['TestPluginTwo'],
-        ];
     }
 
     public function testUnloadNoConfigFile(): void

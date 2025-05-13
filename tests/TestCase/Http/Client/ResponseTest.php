@@ -18,7 +18,7 @@ namespace Cake\Test\TestCase\Http\Client;
 use Cake\Http\Client\Response;
 use Cake\Http\Cookie\CookieCollection;
 use Cake\TestSuite\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 
 /**
  * HTTP response test.
@@ -220,71 +220,18 @@ XML;
     }
 
     /**
-     * provider for isSuccess.
-     *
-     * @return array
-     */
-    public static function isSuccessProvider(): array
-    {
-        return [
-            [
-                true,
-                new Response([
-                    'HTTP/1.1 200 OK',
-                    'Content-Type: text/html',
-                ], 'ok'),
-            ],
-            [
-                true,
-                new Response([
-                    'HTTP/1.1 201 Created',
-                    'Content-Type: text/html',
-                ], 'ok'),
-            ],
-            [
-                true,
-                new Response([
-                    'HTTP/1.1 202 Accepted',
-                    'Content-Type: text/html',
-                ], 'ok'),
-            ],
-            [
-                true,
-                new Response([
-                    'HTTP/1.1 203 Non-Authoritative Information',
-                    'Content-Type: text/html',
-                ], 'ok'),
-            ],
-            [
-                true,
-                new Response([
-                    'HTTP/1.1 204 No Content',
-                    'Content-Type: text/html',
-                ], ''),
-            ],
-            [
-                false,
-                new Response([
-                    'HTTP/1.1 301 Moved Permanently',
-                    'Content-Type: text/html',
-                ], ''),
-            ],
-            [
-                false,
-                new Response([
-                    'HTTP/1.0 404 Not Found',
-                    'Content-Type: text/html',
-                ], ''),
-            ],
-        ];
-    }
-
-    /**
      * Test isSuccess()
      */
-    #[DataProvider('isSuccessProvider')]
-    public function testIsSuccess(bool $expected, Response $response): void
+    #[TestWith([true, ['HTTP/1.1 200 OK', 'Content-Type: text/html'], 'ok'])]
+    #[TestWith([true, ['HTTP/1.1 201 Created', 'Content-Type: text/html'], 'ok'])]
+    #[TestWith([true, ['HTTP/1.1 202 Accepted', 'Content-Type: text/html'], 'ok'])]
+    #[TestWith([true, ['HTTP/1.1 203 Non-Authoritative Information', 'Content-Type: text/html'], 'ok'])]
+    #[TestWith([true, ['HTTP/1.1 204 No Content', 'Content-Type: text/html']])]
+    #[TestWith([false, ['HTTP/1.1 301 Moved Permanently', 'Content-Type: text/html']])]
+    #[TestWith([false, ['HTTP/1.0 404 Not Found', 'Content-Type: text/html']])]
+    public function testIsSuccess(bool $expected, array $headers, string $body = ''): void
     {
+        $response = new Response($headers, $body);
         $this->assertEquals($expected, $response->isSuccess());
     }
 

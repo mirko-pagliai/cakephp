@@ -33,6 +33,7 @@ use DateTimeZone;
 use InvalidArgumentException;
 use Laminas\Diactoros\Stream;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 use Psr\Http\Message\StreamInterface;
 
 /**
@@ -1032,24 +1033,12 @@ class ResponseTest extends TestCase
     }
 
     /**
-     * Provider for various kinds of unacceptable files.
-     *
-     * @return array
-     */
-    public static function invalidFileProvider(): array
-    {
-        return [
-            ['my/../cat.gif', 'The requested file contains `..` and will not be read.'],
-            ['my\..\cat.gif', 'The requested file contains `..` and will not be read.'],
-            ['my/ca..t.gif', 'my/ca..t.gif was not found or not readable'],
-            ['my/ca..t/image.gif', 'my/ca..t/image.gif was not found or not readable'],
-        ];
-    }
-
-    /**
      * test withFile and invalid paths
      */
-    #[DataProvider('invalidFileProvider')]
+    #[TestWith(['my/../cat.gif', 'The requested file contains `..` and will not be read.'])]
+    #[TestWith(['my\..\cat.gif', 'The requested file contains `..` and will not be read.'])]
+    #[TestWith(['my/ca..t.gif', 'my/ca..t.gif was not found or not readable'])]
+    #[TestWith(['my/ca..t/image.gif', 'my/ca..t/image.gif was not found or not readable'])]
     public function testWithFileInvalidPath(string $path, string $expectedMessage): void
     {
         $this->expectException(NotFoundException::class);

@@ -24,7 +24,7 @@ use Cake\Datasource\ConnectionManager;
 use Cake\TestSuite\TestCase;
 use Mockery;
 use PDO;
-use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 
 /**
  * Tests Sqlite driver
@@ -147,32 +147,20 @@ class SqliteTest extends TestCase
     }
 
     /**
-     * Data provider for schemaValue()
-     *
-     * @return array
-     */
-    public static function schemaValueProvider(): array
-    {
-        return [
-            [null, 'NULL'],
-            [false, 'FALSE'],
-            [true, 'TRUE'],
-            [3.14159, '3.14159'],
-            ['33', '33'],
-            [66, 66],
-            [0, 0],
-            [10e5, '1000000'],
-            ['farts', '"farts"'],
-        ];
-    }
-
-    /**
      * Test the schemaValue method on Driver.
      *
      * @param mixed $input
      * @param mixed $expected
      */
-    #[DataProvider('schemaValueProvider')]
+    #[TestWith([null, 'NULL'])]
+    #[TestWith([false, 'FALSE'])]
+    #[TestWith([true, 'TRUE'])]
+    #[TestWith([3.14159, '3.14159'])]
+    #[TestWith(['33', '33'])]
+    #[TestWith([66, 66])]
+    #[TestWith([0, 0])]
+    #[TestWith([10e5, '1000000'])]
+    #[TestWith(['farts', '"farts"'])]
     public function testSchemaValue($input, $expected): void
     {
         $mock = Mockery::mock(PDO::class)

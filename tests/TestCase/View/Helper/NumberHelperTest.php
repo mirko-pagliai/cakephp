@@ -21,7 +21,7 @@ namespace Cake\Test\TestCase\View\Helper;
 use Cake\TestSuite\TestCase;
 use Cake\View\Helper\NumberHelper;
 use Cake\View\View;
-use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 
 /**
  * NumberHelperTest class
@@ -55,23 +55,11 @@ class NumberHelperTest extends TestCase
     }
 
     /**
-     * Provider for method proxying.
-     *
-     * @return array
-     */
-    public static function methodProvider(): array
-    {
-        return [
-            ['precision', 1.23],
-            ['toReadableSize', 1.23],
-            ['toPercentage', 1.23],
-        ];
-    }
-
-    /**
      * Tests calls are proxied to Number class.
      */
-    #[DataProvider('methodProvider')]
+    #[TestWith(['precision', 1.23])]
+    #[TestWith(['toReadableSize', 1.23])]
+    #[TestWith(['toPercentage', 1.23])]
     public function testMethodProxying(string $method, mixed $arg): void
     {
         $helper = new NumberHelper($this->View);
